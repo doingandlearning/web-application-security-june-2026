@@ -6,13 +6,6 @@ and LLM security.
 
 ---
 
-## Delivery format
-
-Remote delivery via Microsoft Teams. No breakout rooms. All exercises use individual
-work followed by plenary chat-share and facilitated discussion.
-
----
-
 ## Timings
 
 | | |
