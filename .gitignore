@@ -1,0 +1,52 @@
+general_teaching/
+for_kevin/
+TEACHING_NOTES.md
+
+# Hide course modules so they can be revealed progressively
+
+# .NET / C# build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.csproj.user
+*.pidb
+*.svclog
+*.vshost.*
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+artifacts/
+
+# Rider / ReSharper / VS Code / VS
+.idea/
+.vs/
+*.DotSettings
+.vscode/
+
+# Logs
+*.log
+logs/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Thumbnails
+._*
+
+# macOS system folders
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+app.db

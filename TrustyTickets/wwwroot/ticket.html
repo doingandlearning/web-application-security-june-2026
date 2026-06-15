@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>Ticket — TrustyTickets</title>
+  <style>
+    :root {
+      --tt-bg: #020617;
+      --tt-surface: #020617;
+      --tt-border-subtle: rgba(30, 64, 175, 0.55);
+      --tt-accent: #38bdf8;
+      --tt-accent-soft: rgba(56, 189, 248, 0.14);
+      --tt-accent-strong: #0ea5e9;
+      --tt-danger: #f97373;
+      --tt-text: #e5e7eb;
+      --tt-text-muted: #9ca3af;
+      --tt-radius-lg: 20px;
+      --tt-radius-md: 10px;
+      --tt-shadow-soft: 0 22px 55px rgba(15, 23, 42, 0.9);
+      --tt-shadow-focus: 0 0 0 1px rgba(148, 163, 184, 0.4), 0 0 0 4px rgba(56, 189, 248, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+      background:
+        radial-gradient(circle at top left, #0f172a 0, #020617 55%, #000 100%);
+      color: var(--tt-text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.75rem 1.25rem 2.25rem;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .nav-shell {
+      position: sticky;
+      top: 0.9rem;
+      z-index: 10;
+      margin: -0.25rem auto 1.5rem;
+      max-width: 900px;
+      padding: 0 0.1rem;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.55rem 0.8rem;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.18), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.18), transparent 60%),
+        linear-gradient(120deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(30, 64, 175, 0.65);
+      box-shadow:
+        0 16px 38px rgba(15, 23, 42, 0.95),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(14px) saturate(140%);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-links {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.15rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(30, 64, 175, 0.65);
+    }
+
+    .nav-links a {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.18rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      text-decoration: none;
+      color: var(--tt-text-muted);
+      border: 1px solid transparent;
+      transition: background-color 0.12s ease-out, color 0.12s ease-out, border-color 0.12s ease-out;
+    }
+
+    .nav-links a[href="/tickets.html"] {
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.4), transparent 60%);
+      color: #e5e7eb;
+      border-color: rgba(56, 189, 248, 0.8);
+    }
+
+    #logout {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--tt-text);
+      font-size: 0.78rem;
+      padding: 0.32rem 0.75rem;
+      cursor: pointer;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.85);
+      transition: background-color 0.12s ease-out, border-color 0.12s ease-out, transform 0.08s ease-out;
+    }
+
+    #logout:hover {
+      background: rgba(15, 23, 42, 0.96);
+      border-color: rgba(248, 250, 252, 0.3);
+      transform: translateY(-0.5px);
+    }
+
+    .surface {
+      border-radius: var(--tt-radius-lg);
+      padding: 1.25rem 1.25rem 1.4rem;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.19), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.16), transparent 55%),
+        linear-gradient(140deg, rgba(15, 23, 42, 0.97), rgba(15, 23, 42, 0.99));
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      box-shadow: var(--tt-shadow-soft);
+      backdrop-filter: blur(18px) saturate(140%);
+      display: grid;
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: 1.5rem;
+    }
+
+    #ticket {
+      min-width: 0;
+    }
+
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      letter-spacing: 0.02em;
+    }
+
+    .meta {
+      color: var(--tt-text-muted);
+      font-size: 0.82rem;
+      margin-bottom: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.8rem;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      color: rgba(191, 219, 254, 0.9);
+    }
+
+    .meta span {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .description {
+      margin: 1rem 0;
+      padding: 0.9rem 0.9rem;
+      border-radius: 0.9rem;
+      background:
+        radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.97));
+      border: 1px solid rgba(30, 64, 175, 0.75);
+      color: var(--tt-text);
+      font-size: 0.9rem;
+    }
+
+    .description::before {
+      content: "Description";
+      display: block;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(148, 163, 184, 0.9);
+      margin-bottom: 0.4rem;
+    }
+
+    .comments {
+      margin-top: 0.35rem;
+      padding: 0.75rem 0.85rem;
+      border-radius: 0.9rem;
+      background:
+        radial-gradient(circle at 0 0, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.97));
+      border: 1px solid rgba(30, 64, 175, 0.75);
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .comments h2 {
+      margin: 0;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(191, 219, 254, 0.9);
+    }
+
+    .comments h2::after {
+      content: "";
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      margin-left: 0.3rem;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    #comments {
+      max-height: 260px;
+      overflow: auto;
+      padding-right: 0.2rem;
+    }
+
+    .comment {
+      margin: 0.3rem 0;
+      padding: 0.5rem 0.7rem;
+      border-radius: 0.7rem;
+      border-left: 3px solid rgba(56, 189, 248, 0.8);
+      background: rgba(15, 23, 42, 0.96);
+      font-size: 0.86rem;
+    }
+
+    .comment .author {
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: rgba(191, 219, 254, 0.95);
+    }
+
+    .comment .author::after {
+      content: " ·";
+      color: rgba(148, 163, 184, 0.8);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 0.55rem 0.65rem;
+      border-radius: 0.7rem;
+      border: 1px solid rgba(30, 64, 175, 0.8);
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--tt-text);
+      font-size: 0.85rem;
+      resize: vertical;
+      outline: none;
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+      transition: border-color 0.14s ease, box-shadow 0.14s ease, background-color 0.14s ease;
+    }
+
+    textarea::placeholder {
+      color: rgba(148, 163, 184, 0.85);
+    }
+
+    textarea:focus {
+      border-color: rgba(56, 189, 248, 0.9);
+      box-shadow: var(--tt-shadow-focus);
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    #addComment {
+      align-self: flex-end;
+      margin-top: 0.2rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: 0;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #0b1120;
+      background: linear-gradient(135deg, var(--tt-accent) 0, var(--tt-accent-strong) 100%);
+      box-shadow:
+        0 10px 24px rgba(56, 189, 248, 0.4),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, filter 0.08s ease-out;
+    }
+
+    #addComment:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 14px 35px rgba(56, 189, 248, 0.52),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      filter: brightness(1.03);
+    }
+
+    #addComment:active {
+      transform: translateY(0);
+      box-shadow:
+        0 8px 20px rgba(15, 23, 42, 0.95),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+      filter: brightness(0.98);
+    }
+
+    .error {
+      color: var(--tt-danger);
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+      min-height: 1rem;
+    }
+
+    select {
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(30, 64, 175, 0.8);
+      background: rgba(15, 23, 42, 0.98);
+      color: var(--tt-text);
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    #assignBtn {
+      margin-left: 0.4rem;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      border: 0;
+      cursor: pointer;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(37, 99, 235, 0.9);
+      color: #e5e7eb;
+      box-shadow: 0 10px 18px rgba(15, 23, 42, 0.9);
+    }
+
+    #assignBtn:hover {
+      background: rgba(37, 99, 235, 1);
+    }
+
+    #attList {
+      margin: 0.4rem 0 0;
+      padding-left: 1rem;
+      font-size: 0.84rem;
+    }
+
+    #attList a {
+      color: #bfdbfe;
+      text-decoration: none;
+    }
+
+    #attList a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 780px) {
+      .surface {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 1.1rem 0.95rem 1.2rem;
+      }
+
+      nav {
+        padding-inline: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-shell">
+    <nav>
+      <div class="nav-left">
+        <div class="nav-links">
+          <a href="/tickets.html">← Tickets</a>
+          <a href="/reports.html">Reports</a>
+        </div>
+      </div>
+      <button id="logout" type="button">Log out</button>
+    </nav>
+  </div>
+
+  <div class="page">
+    <div id="error" class="error" aria-live="polite"></div>
+    <div class="surface">
+      <div id="ticket"></div>
+      <div class="comments">
+        <h2>Comments</h2>
+        <div id="comments"></div>
+        <textarea id="commentBody" placeholder="Add a comment..."></textarea>
+        <button id="addComment">Add comment</button>
+      </div>
+    </div>
+  </div>
+  <script src="/js/api.js"></script>
+  <script>
+    const tid = new URLSearchParams(window.location.search).get('id');
+    if (!tid) { document.getElementById('error').textContent = 'Missing ticket id'; throw new Error('id'); }
+
+    const ticketEl = document.getElementById('ticket');
+    const commentsEl = document.getElementById('comments');
+    const commentBodyEl = document.getElementById('commentBody');
+    const errorEl = document.getElementById('error');
+
+    // VULN (teaching): innerHTML for comments — stored XSS
+    function renderComment(c) {
+      const div = document.createElement('div');
+      div.className = 'comment';
+      div.innerHTML = `<span class="author">${escapeText(c.author?.displayName || '')}</span>: ${c.body}`;
+      return div;
+    }
+    // VULN (lab): innerHTML for description — same pattern, second surface
+    function setDescription(html) {
+      const wrap = document.createElement('div');
+      wrap.className = 'description';
+      wrap.innerHTML = html; // Deliberately unsafe for teaching/lab
+      return wrap;
+    }
+    function escapeText(s) { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML; }
+
+    async function loadTicket() {
+      const me = await api('/api/auth/me').catch(() => null);
+      if (!me) { window.location.href = '/login.html'; return; }
+
+      const t = await api(`/api/tickets/${tid}`);
+      ticketEl.innerHTML = '';
+      ticketEl.appendChild(document.createElement('h1')).textContent = t.title;
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = `#${t.id} · ${t.status} · Owner: ${t.owner?.displayName || ''} · Assigned: ${t.assignedTo?.displayName || '—'}`;
+      ticketEl.appendChild(meta);
+      ticketEl.appendChild(setDescription(t.description || '(no description)'));
+
+      if (t.assignedToId !== undefined) {
+        const assignDiv = document.createElement('div');
+        assignDiv.style.marginTop = '1rem';
+        assignDiv.innerHTML = 'Assign to: <select id="assignSelect"></select> <button id="assignBtn">Assign</button>';
+        ticketEl.appendChild(assignDiv);
+        const users = await api('/api/users').catch(() => []);
+        const sel = document.getElementById('assignSelect');
+        users.forEach(u => { const o = document.createElement('option'); o.value = u.id; o.textContent = u.displayName; if (u.id === t.assignedToId) o.selected = true; sel.appendChild(o); });
+        document.getElementById('assignBtn').addEventListener('click', () => {
+          api(`/api/tickets/${tid}/assign`, { method: 'POST', body: JSON.stringify({ assigneeId: parseInt(sel.value, 10) }) })
+            .then(() => loadTicket())
+            .catch(err => { errorEl.textContent = err.message; });
+        });
+      }
+
+      commentsEl.innerHTML = '';
+      (t.comments || []).forEach(c => commentsEl.appendChild(renderComment(c)));
+
+      if (t.attachments && t.attachments.length > 0) {
+        const attDiv = document.createElement('div');
+        attDiv.style.marginTop = '1rem';
+        attDiv.innerHTML = '<h3>Attachments</h3><ul id="attList"></ul>';
+        ticketEl.appendChild(attDiv);
+        const ul = document.getElementById('attList');
+        t.attachments.forEach(a => {
+          const li = document.createElement('li');
+          li.innerHTML = `<a href="/api/attachments/${a.id}/download">${escapeText(a.fileName)}</a>`;
+          ul.appendChild(li);
+        });
+      }
+    }
+
+    document.getElementById('addComment').addEventListener('click', () => {
+      const body = commentBodyEl.value.trim();
+      if (!body) return;
+      api(`/api/tickets/${tid}/comments`, { method: 'POST', body: JSON.stringify({ body }) })
+        .then(() => { commentBodyEl.value = ''; loadTicket(); })
+        .catch(err => { errorEl.textContent = err.message; });
+    });
+
+    document.getElementById('logout').addEventListener('click', async () => {
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+      window.location.href = '/login.html';
+    });
+
+    loadTicket();
+  </script>
+</body>
+</html>
