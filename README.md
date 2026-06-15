@@ -8,7 +8,6 @@ and LLM security.
 
 ## Timings
 
-| | |
 |---|---|
 | 09:30 – 11:00 | Session 1 |
 | 11:00 – 11:20 | Break |
