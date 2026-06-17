@@ -6,8 +6,13 @@ and LLM security.
 
 ---
 
+[FigJam Link](https://www.figma.com/board/denaKENaMD1wbBiijFWC4e/Web-Application-Security?node-id=0-1&p=f&t=aumKodGsuaY0qz2Z-0)
+
+---
+
 ## Timings
 
+|   |   |
 |---|---|
 | 09:30 – 11:00 | Session 1 |
 | 11:00 – 11:20 | Break |
