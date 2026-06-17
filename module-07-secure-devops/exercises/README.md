@@ -2,9 +2,9 @@
 
 ## Lab 7: Secure DevOps
 
-This lab has two required tasks and one optional extension. Tasks 1 and 2 are the priority — both produce something a team can use immediately. Task 3 (container checklist) is for delegates who work with containers or finish early.
+This lab has two required tasks and two optional extensions. Tasks 1 and 2 are the priority — both produce something a team can use immediately. Task 3 (container checklist) is for delegates who work with containers or finish early. Task 4 (WSTG pipeline mapping) connects the OWASP Testing Guide to your SDLC phases and scanner output — use it if you want to tie Modules 2, 6, and 7 together.
 
-Allow 40–50 minutes for Tasks 1 and 2 plus debriefs.
+Allow 40–50 minutes for Tasks 1 and 2 plus debriefs. Add 20–25 minutes for Task 4 if time allows.
 
 ---
 
@@ -256,11 +256,34 @@ Deploy / run:    runtime policy enforcement (non-root, read-only filesystem, net
 
 ---
 
+## Extension Task 4: Map OWASP WSTG to your pipeline (optional, 20–25 minutes)
+
+The WSTG is a methodology and checklist library — not a tool you run. Use it as the test-case backlog behind SAST, DAST, and manual review.
+
+Full instructions: [04-wstg-pipeline-mapping.md](04-wstg-pipeline-mapping.md)
+
+**Task 1 — Phase mapping (10 minutes)**
+
+Map each of the five WSTG testing phases to one concrete TrustyTickets activity and one tool or artefact (standards, threat model, SAST, ZAP, regression tests).
+
+**Task 2 — Cheapest phase to catch it (8 minutes)**
+
+For SQLi, IDOR, stored XSS, and missing security headers: which WSTG phase catches each cheapest, with what control, and why?
+
+**Task 3 — WSTG rubric for ZAP alerts (7 minutes)**
+
+Classify three sample ZAP alerts by WSTG area, triage true/false positive, choose a pipeline action, and name the earlier phase that should have caught each issue.
+
+**Debrief:** Alert A — which WSTG phase should have caught this first, and with what control? One sentence per pair.
+
+---
+
 ## Expected output
 
 - Task 1: a completed decision table for all six findings plus a three-line policy snippet.
 - Task 2: a completed five-section runbook plus three escalation triggers.
-- Extension: three asks and their pipeline placement.
+- Extension Task 3: three asks and their pipeline placement.
+- Extension Task 4: WSTG phase mapping table, four-row vulnerability table, and triage for three ZAP alerts.
 
 ---
 
